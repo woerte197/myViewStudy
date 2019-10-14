@@ -16,7 +16,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
-    <com.example.myapplication.widget.nine.NineTwo
+    <com.example.myapplication.widget.nine.NineThree
             android:id="@+id/nineTwo"
             android:layout_width="0dp"
             android:layout_height="0dp"
