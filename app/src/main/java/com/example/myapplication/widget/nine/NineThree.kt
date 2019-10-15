@@ -4,8 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.RequiresApi
 
 /*
 * Flag的具体含义
@@ -28,7 +30,13 @@ import android.view.View
 * 在覆盖上去                               适用范围 saveLayer
 * CLIP_TO_LAYER_SAVE_FLAG 在保存图层前先把当前画布根据bounds裁剪，与CLIP_SAVE_FLAG冲突
 * 若同时指定以与CLIP_SAVE_FLAG为准          适用范围 saveLayer
+* 在恢复是只会吧当前saveLayer创建的画布内容进行叠加而不会把裁剪的canvas恢复
+* 当于CLIP_SAVE_FLAG 一同使用时会将canvas恢复
 *
+* save 默认的flag ALL_SAVE_FLAG = MATRIX_SAVE_FLAG|CLIP_SAVE_FLAG
+* 对于 saveLayer来说 ALL_SAVE_FLAG = MATRIX_SAVE_FLAG|CLIP_SAVE_FLAG|HAS_ALPHA_LAYER_SAVE_FLAG
+* restore函数 与restoreToCount函数是同一个栈可以通用每次save 函数 都会增加一次
+* restore 直接回退到栈顶  而restoreToCount回退到对应id之前
 * */
 class NineThree @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -40,17 +48,51 @@ class NineThree @JvmOverloads constructor(
         mPaint?.color = Color.GRAY
     }
 
+    /*
+    * CLIP_SAVE_FLAG 与  MATRIX_SAVE_FLAG
+    * */
+//    override fun onDraw(canvas: Canvas?) {
+//        super.onDraw(canvas)
+//        canvas?.save()
+//        canvas?.rotate(40f)
+//        canvas?.drawRect(0f, 0f, 100f, 100f, mPaint!!)
+//        canvas?.clipRect(100f, 0f, 200f, 100f)
+//        canvas?.drawColor(Color.GRAY)
+//        canvas?.restore()
+//        mPaint?.color = Color.RED
+//        canvas?.drawRect(0f, 0f, 100f, 100f, mPaint!!)
+//        canvas?.drawColor(Color.BLACK)
+//    }
 
+//    @SuppressLint("NewApi", "WrongConstant")
+//    override fun onDraw(canvas: Canvas?) {
+//        super.onDraw(canvas)
+//        canvas?.drawColor(Color.RED)
+//        canvas?.saveLayer(0f, 0f, 200f, 200f, mPaint,0x10)
+//        canvas?.drawColor(Color.GRAY)
+//        mPaint?.color = Color.GREEN
+//        canvas?.drawRect(0f, 0f, 100f, 100f, mPaint!!)
+//        canvas?.clipRect(0f,0f,200f,200f)
+//        canvas?.restore()
+//        canvas?.drawColor(Color.BLACK)
+//    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        canvas?.save()
-        canvas?.rotate(40f)
-        canvas?.drawRect(0f,0f,100f,100f,mPaint!! )
-        canvas?.clipRect(100f,0f,200f,100f)
+        var a = canvas?.saveLayer(0f, 0f, 500f, 500f, mPaint!!)
+        canvas?.drawColor(Color.RED)
+        var b = canvas?.saveLayer(0f, 0f, 400f, 400f, mPaint!!)
         canvas?.drawColor(Color.GRAY)
-        canvas?.restore()
-        mPaint?.color = Color.RED
-        canvas?.drawRect(0f,0f,100f,100f,mPaint!! )
+        var c = canvas?.saveLayer(0f, 0f, 300f, 300f, mPaint!!)
+        canvas?.drawColor(Color.GREEN)
+        var d = canvas?.saveLayer(0f, 0f, 200f, 200f, mPaint!!)
+        canvas?.drawColor(Color.WHITE)
+        var e = canvas?.saveLayer(0f, 0f, 100f, 100f, mPaint!!)
         canvas?.drawColor(Color.BLACK)
+        canvas?.restoreToCount(d!!)
+        canvas?.drawColor(Color.WHITE)
+
     }
+
 }
