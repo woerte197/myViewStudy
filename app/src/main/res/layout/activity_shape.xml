@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".widget.ten.tenone.ShapeActivity">
+
+    <Button
+            android:visibility="gone"
+            android:id="@+id/mButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <Button
+            android:visibility="gone"
+            android:background="@drawable/shape_ten_one"
+            android:id="@+id/mChangeBt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    <!--<com.example.myapplication.widget.ten.tenone.TelescopeView-->
+    <!--android:layout_width="500dp"-->
+    <!--android:background="#ffffff"-->
+    <!--android:layout_height="500dp"/>-->
+    <ImageView
+            android:scaleType="centerInside"
+            android:id="@+id/mTestImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+</FrameLayout>
