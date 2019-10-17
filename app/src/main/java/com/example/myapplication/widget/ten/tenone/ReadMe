@@ -1,0 +1,109 @@
+* ShapeDrawable 有两个构造函数
+* ShapeDrawable()
+* ShapeDrawable(Shape s)
+* 使用第一个构造函数需要额外使用setShape方法 所以直接使用第二个构造函数
+* Shape 是一个抽象类，有以下实例
+* RectShape 构造一个矩形Shape
+* AreShape  构造一个扇形Shape
+* OvalShape 构造一个椭圆Shape
+* RoundRectShape 构造一个圆角矩形Shape 可带有镂空矩形效果
+* PathShape:构造一个可根据枯井绘制的Shape
+
+* ShapeDrawable 的 setBounds 方法位置对应的是当前控件的坐标不是整个屏幕的坐标
+* ShapeDrawable 是自带画笔的 当更改Paint的内容时自动更新drawable
+* paint.setShader  shader 是从当前画布左上角开始绘图的所以当ShapeDrawable 的Paint 调用Shader时
+* shapeDrawable所在区域的左上角开始绘制的
+* setAlpha 设置透明度
+* setColorFilter
+* setIntrinsicHeight设置默认高度
+* setIntrinsicWidth 设置默认宽度
+* setPadding  设置边距
+
+* draw()函数 与view函数类似
+* setAlpha（）与  setColorFilter()函数将参数传给对应的paint
+
+
+* RoundRectShape 参数 第一个参数是以个外面圆角数组 长度为8 每两个指定一个角 分别对应左上角 右上角 右小角 左下角
+* 第二个参数是一个矩形
+* 第三个参数是内角读书同第一个参数
+
+* Bitmap 与 Drawable 区别
+* 1. 定义的对比
+* Bitmap 被称为 位图 一般位图的文件格式扩展名为.bmp 当然编码器也有很多例如RGB565 RGB8888
+* 作为一种逐像素的显示对象,其执行效率高 但缺点也很明显 即存储效率低 将其理解为一种存储对象比较好
+* Drawable 作为Android 下通用的 图形对象，他可以装载常用格式的图像，比如GIF PNG JPG 也支持BMP 还提供了一些高级的
+* 可视化对象 比如渐变 图形等等
+* 也就是说 bitmap 是drawable 但是 drawable不一定是 bitmap
+* 指标对比
+* 对比项     显示清晰度        占用内存       支持缩放      支持色相色差调整   支持旋转   支持透明色   绘制速度   支持像素操作
+* bitmap        相同              大           是               是              是         是         慢             是
+* drawable      相同              小           是               否              是         是         快             否
+* 绘图便利性对比
+* Drawable 有很多派生类，通过这些派生类可以很容易的生成渐变，层叠等效果. 当从这一方面而言  Drawable 比 bitmap 有优势
+* 但是如果只是使用空画布来绘图  使用bitmap 比较方便
+* 使用简易性对比
+* drawable 是自带画笔的 只需要通过 drawable。getPaint()函数获取到画布的Paint对象 对其操作会直接更新到drawable 上
+* 所以我们调用Paint 的函数很方便 一般使用Drawable的Canvas  不是很方便所以Drawable 的 子类一般只用来完成它固有的功能
+* 如果想在Bitmap上作画
+* val canvas = Canvas(bitmap)
+* val paint = Paint()
+* canvas.draw(**,**,paint)
+* canvas 对象绘制的图像直接绘制在bitmap 上 并且画笔也是可以随意定制的所以就简易性而言 bitmap 比较简单
+* 使用方式对比
+* Bitmap 主要在View中通过Canvas.drawBitmap()函数画出来；而Drawable不仅能在View中通过Drawable.draw(Canvas canvas)函数画出来，
+* 也可以通过Drawable.draw(Canvas canvas)函数画出来，也可以通过 setImageBackground() setBackgroundDrawable()等设置Drawable资源的函数
+*
+* Bitmap
+* Bitmap 相关使用有两种 第一种是转换为BitmapDrawable 对象使用，第二种是当做画布来使用
+* 当作画布使用时 有两种一种是使用默认的canvas 另一种是新建画布
+* Bitmap 格式
+* 我们都知道 Bitmap 是位图 也就是有一个个像素点组成的 涉及到了两个问题 第一，如何存储每个像素点，第二，相关的像素点之间是否能够压缩，这也就涉及压缩算法的问题
+* 第一个问题  如何存储每个像素点
+* 一张位图所占用的内存  = 图片长度（px）*图片宽度（px）* 一个像素点占用的字节数
+* 一个像素点占用的字节室友枚举类型Bitmap.Config中的各个参数来表示的
+* ALPHA_8     表示 8位Alpha位图 即A = 8 表示只存储Alpha 位， 不存储颜色值. 一个像素点占用1字节. 没有颜色只有透明度
+* ARGB_4444   表示 16位ARGB位图，即A.R.G.B 各占4位，一个像素点占 4+4+4+4 = 16 位  2个字节  画质垃圾 在Api 13 中已经弃用了
+* ARGB_8888   表示 32位ARGB位图，即A,R,G,B 各占8位，一个像素点 8+8+8+8 = 32位     4个字节 (画质最高的)
+* RGB_565     表示 16位RGB位图 ，即R,G,B 分别占5位 6位  5位  一个像素点  5+6+5 = 16位 2个字节 如果对于图片没有透明度要求可以使用此 能省下一半内存
+* 其中A代表透明度：R代表红色; G代表绿色；B代表蓝色
+* 以 ARGB_8888 为例子 创建一个全屏显示的图片 内存 = 1024*768*4b = 3M
+* 第二个问题 Bitmap 压缩格式
+* 压缩格式 使用枚举类Bitmap.CompressFormat中的成员变量表示
+* JPEG
+* PNG
+* WEBP
+* 创建Bitmap 的方法之一 BitmapFactory
+* BitmapFactory 用于从各种资源。文件。数据流和字节数组创建Bitmap对象
+* BitmapFactory 函数如下
+* decodeResource(Resources res, int id)
+* decodeResource(Resources res, int id, Options opts)
+* decodeFile(String pathName)  pathName全路径名  Android 系统存储根目录下常用的文件夹
+* cache 缓冲区目录 用于存放临时文件
+* data  存放数据 data/app 存储用户安装的apk文件; data/data目录下存放的是系统中所有App数据文件以Apk 包名区分
+* sdcard SD卡的挂载点 其下面的子目录用于存放SD卡上的文件
+* system  Android 系统中最重要的文件目录 主要用于存放系统文件
+* tmp    用于存放临时文件
+* decodeFile(String pathName, Options opts)
+* decodeByteArray(byte[] data, int offset, int length, Options opts)
+* decodeByteArray(byte[] data, int offset, int length)
+* data 字节数组并不是想象中的数组 而是直接把输入流转换为字节内存输出流的字节数组格式.
+* decodeFileDescriptor(FileDescriptor fd, Rect outPadding, Options opts)
+* decodeFileDescriptor(FileDescriptor fd)
+* 相比较于decodeFile 更节省内存 在调用native方法之前最多可能会申请两次空间
+* decodeStream(@Nullable InputStream is, @Nullable Rect outPadding,
+             @Nullable Options opts)
+* decodeStream(InputStream is)
+*decodeResourceStream(@Nullable Resources res, @Nullable TypedValue value,
+             @Nullable InputStream is, @Nullable Rect pad, @Nullable Options opts)
+
+* BitmapFactory,Options 这个参数的作用非常大 他可以设置Bitmap 的采样率通过改变图片的宽度，高度，缩放比例等以达到减少图片像素的目的
+* inJustDecodeBounds 获取图片信息 如果设置为true 则表示直接洗图片信息 不获取图片 不分配内存 能获取烦的信息包括 图片的宽高 MIME 类型
+* inSampleSize  压缩图片 这个字段表示采样率 如果这个字段为 4  表示从原本图片的4个像素中取一个像素作为结果返回，其余的都会丢弃，采样率越大，图片越小，同时图片失真
+* 官方建议取2的幂数
+* 不同名称的资源文件夹是为了适配不同分辨率的屏幕分辨率的，当屏幕分辨率与文件所在资源文件夹对应的分辨率相同时，直接使用图片，不会进行缩放
+* 当分辨率不同时动态缩放图片 缩放比例是 屏幕分辨率/文件夹所对应的分辨率
+* 当从本地文件中加载图片时，不会对图片进行缩放
+* inScaled 在需要缩放时是否对当前文件进行缩放 设置为false 不进行缩放  默认为true
+* inDensity 用于设置文件所在资源文件夹的屏幕分辨率
+* inTargetDensity: 表示真实显示的屏幕分辨率
+* inScreenDensity: 没用

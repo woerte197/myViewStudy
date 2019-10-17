@@ -28,7 +28,8 @@ class ShapeActivity : AppCompatActivity() {
             val drawable = mChangeBt.background as GradientDrawable
             drawable.cornerRadius = 20f
         }
-        val drawable = CustomDrawable(BitmapFactory.decodeResource(resources, R.drawable.timg))
-        mTestImageView.setImageDrawable(drawable)
+//        val drawable = CustomDrawable(BitmapFactory.decodeResource(resources, R.drawable.timg))
+//        mTestImageView.setImageDrawable(drawable)
+        mTestImageView.setImageBitmap(BitmapFactory.decodeResource(resources,R.drawable.timg))
     }
 }
