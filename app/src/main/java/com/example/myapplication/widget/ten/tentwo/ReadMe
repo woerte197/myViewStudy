@@ -1,0 +1,45 @@
+* 创建Bitmap  静态方法
+* Bitmap 自带的静态方法有以下几个
+* createBitmap(int width, int height, @NonNull Config config) 创建一个指定大小的空白图像 width height 的单位是px Config 默认取值ARGB_8888
+* createBitmap(Bitmap source,int x,int y,int width,int height) 主要用于函数的裁剪 source 裁剪的原图像 x,y裁剪的坐标 width 裁剪的宽度 height 裁剪的高度
+* createBitmap(Bitmap source,int x,int y,int width,int height，Matrix m,boolean filter) 不仅仅能够裁剪 还能够还能添加矩阵  filter 给图想添加滤波效果
+* createBitmap(@NonNull @ColorInt int[] colors, int offset, int stride,
+             int width, int height, @NonNull Config config)
+* createBitmap(@NonNull @ColorInt int[] colors,
+                          int width, int height, Config config)指定色彩创建图像 colors 长度必须打过width*height
+* createScaledBitmap(Bitmap src,int desWidth,int dstHeight,boolean filter) 用于缩放Bitmap src 需要缩放的源图像 disWidth disHeight 缩放后的目标宽高 filter 是否加滤波效果
+
+*createBitmap(@Nullable DisplayMetrics display, int width,
+              int height, @NonNull Config config)
+* createBitmap(int width, int height,
+             @NonNull Config config, boolean hasAlpha)
+* createBitmap(int width, int height, @NonNull Config config,
+             boolean hasAlpha, @NonNull ColorSpace colorSpace)
+* createBitmap(@Nullable DisplayMetrics display, int width, int height,
+             @NonNull Config config, boolean hasAlpha)
+* createBitmap(@Nullable DisplayMetrics display, int width, int height,
+              @NonNull Config config, boolean hasAlpha, @NonNull ColorSpace colorSpace)
+
+* createBitmap(@NonNull DisplayMetrics display,
+              @NonNull @ColorInt int[] colors, int offset, int stride,
+              int width, int height, @NonNull Config config)
+
+* createBitmap(@Nullable DisplayMetrics display,
+             @NonNull @ColorInt int colors[], int width, int height, @NonNull Config config)
+* createBitmap(@NonNull Picture source)
+* createBitmap(@NonNull Picture source, int width, int height,
+              @NonNull Config config)
+* 总结
+* 通过配置 BitmapFactory.Options 可以实现缩放图片，获取图片片信息，配置缩放比例等功能
+* 如果需要裁剪或者缩放图片 则只能使用Bitmap的create 系列函数
+* Bitmap 常用函数
+* copy(Config config,boolean isMutable)
+* 根据源图像创建一个副本，可以指定像素存储格式 isMutable 是否可以更改其中的像素
+* 通过BitmapFactory创建的Bitmap 的像素都是不可以更改的
+* 只有以下几个create方法是可以更改像素的  copy()  createBitmap(int width, int height, @NonNull Config config) createScaledBitmap(Bitmap src,int desWidth,int dstHeight,boolean filter)
+createBitmap(@Nullable DisplayMetrics display, int width,int height, @NonNull Config config) 如果以不能更改像素的Bitmap 构建canvas 向canvas 填充z颜色时会报错
+* extractAlpha() 从Bitmap 中抽取Alpha值 生成一个只有Alpha 图像的 像素存储格式Alpha_8
+* extractAlpha(Paint paint,in[] offsetX)
+* paint 具有MaskFilter 效果的paint对象，一般使用模糊效果
+* offsetX 再添加BlurMaskFilter效果以后原点偏移量.
+

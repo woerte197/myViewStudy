@@ -107,3 +107,5 @@
 * inDensity 用于设置文件所在资源文件夹的屏幕分辨率
 * inTargetDensity: 表示真实显示的屏幕分辨率
 * inScreenDensity: 没用
+* inPreferredConfig 这个参数是用来设置像素的存储格式的. ALPHA_8 ARGB_4444 ARGB_8888 RGB_565默认 ARGB_8888
+*

@@ -9,9 +9,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".widget.ten.tenone.ShapeActivity">
+        </activity>
         <activity android:name=".MainActivity">
         </activity>
-        <activity android:name=".widget.ten.tenone.ShapeActivity">
+        <activity android:name=".widget.ten.tentwo.TenTwoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
